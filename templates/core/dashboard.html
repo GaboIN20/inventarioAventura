@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>Bienvenido, {{ user.first_name|default:user.username }}</h2>
+<p class="text-muted">Sesión iniciada como: <strong>{{ request.session.rol_usuario }}</strong></p>
+<div class="row g-3 mt-3">
+    {% if rol == 'ADMIN' %}
+        <div class="col-md-4"><div class="card p-3 bg-primary text-white"><h5>Usuarios</h5><h2>{{ total_usuarios }}</h2></div></div>
+        <div class="col-md-4"><div class="card p-3 bg-success text-white"><h5>Experiencias</h5><h2>{{ total_experiencias }}</h2></div></div>
+        <div class="col-md-4"><div class="card p-3 bg-warning text-dark"><h5>Reservas Totales</h5><h2>{{ total_reservas }}</h2></div></div>
+    {% elif rol == 'GUIA' %}
+        <div class="col-md-4"><div class="card p-3 bg-success text-white"><h5>Mis Experiencias Publicadas</h5><h2>{{ mis_experiencias }}</h2></div></div>
+    {% else %}
+        <div class="col-md-4"><div class="card p-3 bg-info text-white"><h5>Mis Reservas Activas</h5><h2>{{ mis_reservas }}</h2></div></div>
+    {% endif %}
+</div>
+{% endblock %}

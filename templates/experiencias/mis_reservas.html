@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% block content %}
+<h3>{% if user.perfil.rol == 'ADMIN' %}Todas las Reservas{% else %}Mis Reservas{% endif %}</h3>
+<table class="table table-striped datatable mt-3">
+    <thead><tr><th>Turista</th><th>Experiencia</th><th>Fecha Reserva</th><th>Estado Pago</th><th>Acción</th></tr></thead>
+    <tbody>
+        {% for r in reservas %}
+        <tr>
+            <td>{{ r.turista.username }}</td>
+            <td>{{ r.experiencia.titulo }}</td>
+            <td>{{ r.fecha_inscripcion|date:"d/m/Y H:i" }}</td>
+            <td>
+                {% if r.estado_pago == 'CONFIRMADO' %}
+                    <span class="badge bg-success">Confirmado</span>
+                {% else %}
+                    <span class="badge bg-warning text-dark">Pendiente</span>
+                {% endif %}
+            </td>
+            <td>
+                {% if r.estado_pago == 'PENDIENTE' %}
+                    <a href="{% url 'confirmar_pago' r.id %}" class="btn btn-primary btn-sm">Confirmar Pago</a>
+                {% else %}
+                    -
+                {% endif %}
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

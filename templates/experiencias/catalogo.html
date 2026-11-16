@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% block content %}
+<h3>Catálogo de Experiencias Disponibles</h3>
+<table class="table table-striped datatable mt-3">
+    <thead><tr><th>Actividad</th><th>Categoría</th><th>Fecha</th><th>Precio</th><th>Cupos</th><th>Acción</th></tr></thead>
+    <tbody>
+        {% for e in experiencias %}
+        <tr>
+            <td><strong>{{ e.titulo }}</strong><br><small>{{ e.descripcion }}</small></td>
+            <td>{{ e.categoria.nombre }}</td>
+            <td>{{ e.fecha_hora|date:"d/m/Y H:i" }}</td>
+            <td>${{ e.precio }}</td>
+            <td>{{ e.cupos_disponibles }}</td>
+            <td>
+                {% if e.id in mis_ids %}
+                    <span class="badge bg-info">Ya Inscrito</span>
+                {% elif e.cupos_disponibles > 0 %}
+                    <a href="{% url 'inscribir_experiencia' e.id %}" class="btn btn-success btn-sm">Inscribirme</a>
+                {% else %}
+                    <span class="badge bg-secondary">Agotado</span>
+                {% endif %}
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

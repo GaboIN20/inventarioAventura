@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Ecoparque Aventuras del Sur</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+<div class="d-flex">
+    {% if user.is_authenticated %}
+    <!-- Sidebar -->
+    <nav class="bg-dark text-white p-3 vh-100" style="width: 260px;">
+        <h5 class="text-success fw-bold">Aventuras del Sur</h5>
+        <small class="text-secondary d-block mb-3">Rol: {{ user.perfil.get_rol_display }}</small>
+        <ul class="nav flex-column gap-2">
+            <li class="nav-item"><a href="{% url 'dashboard' %}" class="nav-link text-white">Panel Principal</a></li>
+            
+            {% if user.perfil.rol == 'ADMIN' %}
+                <li class="nav-item"><a href="{% url 'lista_usuarios' %}" class="nav-link text-white">Gestión Usuarios</a></li>
+                <li class="nav-item"><a href="{% url 'lista_categorias' %}" class="nav-link text-white">Categorías</a></li>
+                <li class="nav-item"><a href="{% url 'lista_experiencias' %}" class="nav-link text-white">Todas las Experiencias</a></li>
+                <li class="nav-item"><a href="{% url 'mis_reservas' %}" class="nav-link text-white">Todas las Reservas</a></li>
+            {% elif user.perfil.rol == 'GUIA' %}
+                <li class="nav-item"><a href="{% url 'lista_experiencias' %}" class="nav-link text-white">Mis Experiencias</a></li>
+            {% elif user.perfil.rol == 'TURISTA' %}
+                <li class="nav-item"><a href="{% url 'catalogo' %}" class="nav-link text-white">Catálogo Actividades</a></li>
+                <li class="nav-item"><a href="{% url 'mis_reservas' %}" class="nav-link text-white">Mis Reservas</a></li>
+            {% endif %}
+            
+            <li class="nav-item mt-4"><a href="{% url 'logout' %}" class="btn btn-outline-danger btn-sm w-100">Cerrar Sesión</a></li>
+        </ul>
+    </nav>
+    {% endif %}
+
+    <!-- Contenido -->
+    <main class="flex-grow-1 p-4">
+        {% if messages %}
+            {% for msg in messages %}
+                <div class="alert alert-{{ msg.tags }} alert-dismissible fade show">{{ msg }}</div>
+            {% endfor %}
+        {% endif %}
+        {% block content %}{% endblock %}
+    </main>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $('.datatable').DataTable({
+            language: { url: '//cdn.datatables.net/plug-ins/1.13.6/i18n/es-ES.json' }
+        });
+    });
+</script>
+</body>
+</html>

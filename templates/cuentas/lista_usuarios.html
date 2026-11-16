@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="d-flex justify-content-between mb-3">
+    <h3>Gestión de Usuarios</h3>
+    <a href="{% url 'crear_usuario_admin' %}" class="btn btn-success">+ Nuevo Usuario</a>
+</div>
+<table class="table table-striped datatable">
+    <thead><tr><th>Usuario</th><th>Nombre</th><th>Email</th><th>Rol</th><th>Acciones</th></tr></thead>
+    <tbody>
+        {% for u in usuarios %}
+        <tr>
+            <td>{{ u.username }}</td>
+            <td>{{ u.first_name }} {{ u.last_name }}</td>
+            <td>{{ u.email }}</td>
+            <td><span class="badge bg-secondary">{{ u.perfil.get_rol_display }}</span></td>
+            <td>
+                {% if u != request.user %}
+                <a href="{% url 'eliminar_usuario' u.id %}" class="btn btn-danger btn-sm">Eliminar</a>
+                {% endif %}
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}
